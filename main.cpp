@@ -1,13 +1,14 @@
 #include "Board.h"
+#include "Utils.h"
 #include <iostream>
 
 int main(void)
 {
     srand( time( NULL ) );
 
-    gehul::Board board(4);
+    gehul::Board board(5);
     std::cout << board << std::endl;
- 
+
     char c;
     do
     {
@@ -18,5 +19,5 @@ int main(void)
         board.move((gehul::Direction) c);
         std::cout << board << std::endl;
 
-    }while(c != 'Q');
+    }while(c != 'O');
 }

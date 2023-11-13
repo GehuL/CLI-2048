@@ -7,7 +7,7 @@
 namespace gehul
 {
     enum class Direction
-    {   
+    {
         GAUCHE = 'Q',
         DROITE = 'D',
         HAUT   = 'Z',
@@ -32,9 +32,18 @@ namespace gehul
 
         friend std::ostream& operator<<(std::ostream& os, Board& board);
 
+
         private:
 
-        void move(int dx, int dy);
+        void flipH();
+
+        void flipV();
+
+        void transpose();
+
+        void move();
+
+        std::vector<int> getAvailableSpace();
 
         void genRandomTiles();
 
