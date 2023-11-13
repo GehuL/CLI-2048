@@ -1,8 +1,8 @@
 #include "Board.h"
 
-#include <time.h>
 #include <random>
 #include <iostream>
+#include <assert.h>
 
 namespace gehul
 {
@@ -14,6 +14,7 @@ namespace gehul
 
     void Board::move(int dx, int dy)
     {
+
     }
 
     void Board::move(Direction dir)
@@ -43,14 +44,12 @@ namespace gehul
                         {
                             setTile(i, j, 0);
                             setTile(i, k, value2 * 2);
-                            std::cout << "x2" << std::endl;
                             break;
                         }
                         else if (k == _longueur - 1)
                         {
                             setTile(i, j, 0);
                             setTile(i, k, value);
-                            std::cout << "l" << std::endl;
                             break;
                         }
                     }
@@ -81,14 +80,12 @@ namespace gehul
                         {
                             setTile(i, j, 0);
                             setTile(i, k, value2 * 2);
-                            std::cout << "x2" << std::endl;
                             break;
                         }
                         else if (k == 0)
                         {
                             setTile(i, j, 0);
                             setTile(i, k, value);
-                            std::cout << "l" << std::endl;
                             break;
                         }
                     }

@@ -1,5 +1,7 @@
-#include "Board.h"
+#include <time.h>
 #include <iostream>
+#include "Board.h"
+
 
 int main(void)
 {
@@ -7,16 +9,21 @@ int main(void)
 
     gehul::Board board(4);
     std::cout << board << std::endl;
- 
-    char c;
+
     do
     {
+        char c;
+
         std::cout << "Move (ZQSD):" << std::endl;
         std::cin >> c;
+
         c = toupper(c);
+
+        if(c == 'Q')
+            break;
 
         board.move((gehul::Direction) c);
         std::cout << board << std::endl;
 
-    }while(c != 'Q');
+    }while(true);
 }

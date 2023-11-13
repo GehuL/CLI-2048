@@ -7,7 +7,7 @@
 namespace gehul
 {
     enum class Direction
-    {   
+    {
         GAUCHE = 'Q',
         DROITE = 'D',
         HAUT   = 'Z',
