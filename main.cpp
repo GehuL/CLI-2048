@@ -1,29 +1,33 @@
-#include <time.h>
-#include <iostream>
 #include "Board.h"
+#include "Utils.h"
 
+#include <iostream>
+#include <time.h>
 
 int main(void)
 {
     srand( time( NULL ) );
 
-    gehul::Board board(4);
+    gehul::Board board(5);
     std::cout << board << std::endl;
 
+    char c;
     do
     {
-        char c;
-
-        std::cout << "Move (ZQSD):" << std::endl;
+        std::cout << "Move (ZQSD): ";
         std::cin >> c;
 
         c = toupper(c);
 
-        if(c == 'Q')
-            break;
+        if(c == 'R')
+            board.restart();
+        else
+            board.move((gehul::Direction) c);
 
-        board.move((gehul::Direction) c);
+        system("cls");
+
+        std::cout << "----- 2048 -----\nEnter O to quit. R to restart" << std::endl;
         std::cout << board << std::endl;
 
-    }while(true);
+    } while(c != 'O');
 }
