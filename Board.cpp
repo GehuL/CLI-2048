@@ -14,42 +14,47 @@ namespace gehul
         restart();
     }
 
-    // Deplace les valeurs vers le bas
-    void Board::move()
+    // Deplace les valeurs vers le bas de la grille
+    // Renvoie si le plateau est différent
+    bool Board::move()
     {
+        std::vector<int> copie(_tiles);
+
         for (int i = 0; i < _longueur; i++)
+        {
+            for (int j = _longueur - 1; j >= 0; j--)
             {
-                for (int j = _longueur - 1; j >= 0; j--)
+                int value = getTile(i, j);
+
+                if (value == 0)
+                    continue;
+
+                for (int k = j + 1; k < _longueur; k++)
                 {
-                    int value = getTile(i, j);
+                    int value2 = getTile(i, k);
 
-                    if (value == 0)
-                        continue;
-
-                    for (int k = j + 1; k < _longueur; k++)
+                    if (value2 != value && value2 != 0)
                     {
-                        int value2 = getTile(i, k);
-                        if (value2 != value && value2 != 0)
-                        {
-                            setTile(i, j, 0);
-                            setTile(i, k - 1, value);
-                            break;
-                        }
-                        else if (value == value2)
-                        {
-                            setTile(i, j, 0);
-                            setTile(i, k, value2 * 2);
-                            break;
-                        }
-                        else if (k == _longueur - 1)
-                        {
-                            setTile(i, j, 0);
-                            setTile(i, k, value);
-                            break;
-                        }
+                        setTile(i, j, 0);
+                        setTile(i, k - 1, value);
+                        break;
+                    }
+                    else if (value == value2)
+                    {
+                        setTile(i, j, 0);
+                        setTile(i, k, value2 * 2);
+                        break;
+                    }
+                    else if (k == _longueur - 1)
+                    {
+                        setTile(i, j, 0);
+                        setTile(i, k, value);
+                        break;
                     }
                 }
             }
+        }
+        return copie != _tiles;
     }
 
     void Board::flipH()
@@ -93,51 +98,53 @@ namespace gehul
 
     void Board::move(Direction dir)
     {
+        bool moved = false;
         switch (dir)
         {
         case Direction::BAS:
-            move();
+            moved = move();
             break;
         case Direction::HAUT:
             flipH();
-            move();
+            moved = move();
             flipH();
             break;
         case Direction::DROITE:
             transpose();
             flipV();
-            move();
+            moved = move();
             flipV();
             transpose();
             break;
         case Direction::GAUCHE:
             transpose();
             flipH();
-            move();
+            moved = move();
             flipH();
             transpose();
             break;
+        default:
+            return;
         }
 
-        _tries++;
-        std::vector<int> freespaces = getAvailableSpace();
-        if(freespaces.size() == 0);
-        else
-            _tiles[rand() % freespaces.size()] = (rand() % 2) * 2 + 2;
+        if(moved)
+        {
+            _tries++;
+            genRandomTiles();
+        }
     }
 
-    std::vector<int> Board::getAvailableSpace()
+    inline int Board::randVal() const
     {
-        std::vector<int> index;
-        for(int i = 0; i < _tiles.size(); i++)
-            if(_tiles[i] == 0) index.push_back(i);
-        return index;
+        return (rand() % 2) * 2 + 2;
     }
 
     void Board::restart()
     {
         _score = 0;
         _tries = 0;
+
+        _tiles.assign(_tiles.size(), 0);
 
         genRandomTiles();
         genRandomTiles();
@@ -147,13 +154,14 @@ namespace gehul
         int index = linearize(x, y);
         _tiles[index] = value;
     }
+
     int Board::getTile(int x, int y) const
     {
         int index = linearize(x, y);
         return _tiles.at(index);
     }
 
-    std::ostream &Board::print(std::ostream &os)
+    std::ostream &Board::print(std::ostream &os) const
     {
         os << std::endl;
         os << "Tries: " << _tries << std::endl;
@@ -189,7 +197,17 @@ namespace gehul
 
     void Board::genRandomTiles()
     {
-        int index = rand() % _tiles.size();
-        _tiles[index] = (rand() % 2) * 2 + 2;
+        // Looking for indexes where there is a zero
+        std::vector<int> free_indexes;
+        for(int i = 0; i < _tiles.size(); i++)
+            if(_tiles[i] == 0)
+                free_indexes.push_back(i);
+
+        // Insert a value at a random available space
+        if(free_indexes.size() > 0)
+        {
+            int index = rand() % free_indexes.size();
+            _tiles[free_indexes[index]] = randVal();
+        }
     }
 }

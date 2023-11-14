@@ -1,6 +1,8 @@
 #include "Board.h"
 #include "Utils.h"
+
 #include <iostream>
+
 
 int main(void)
 {
@@ -12,12 +14,19 @@ int main(void)
     char c;
     do
     {
-        std::cout << "Move (ZQSD):" << std::endl;
+        std::cout << "Move (ZQSD): ";
         std::cin >> c;
         c = toupper(c);
 
-        board.move((gehul::Direction) c);
+        if(c == 'R')
+            board.restart();
+        else
+            board.move((gehul::Direction) c);
+
+        system("cls");
+
+        std::cout << "----- 2048 -----\nEnter O to quit. R to restart" << std::endl;
         std::cout << board << std::endl;
 
-    }while(c != 'O');
+    } while(c != 'O');
 }
