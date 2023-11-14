@@ -28,12 +28,15 @@ namespace gehul
 
         int getTile(int x, int y) const;
 
-        std::ostream& print(std::ostream& os);
+        std::ostream& print(std::ostream& os) const;
 
         friend std::ostream& operator<<(std::ostream& os, Board& board);
 
-
         private:
+
+        inline int randVal() const;
+
+        inline int linearize(int x, int y) const;
 
         void flipH();
 
@@ -41,13 +44,9 @@ namespace gehul
 
         void transpose();
 
-        void move();
-
-        std::vector<int> getAvailableSpace();
+        bool move();
 
         void genRandomTiles();
-
-        inline int linearize(int x, int y) const;
 
         int _score;
 
