@@ -14,7 +14,7 @@ namespace gehul
     }
 
     // Deplace les valeurs vers le bas de la grille
-    // Renvoie si le plateau est différent
+    // Renvoie si le plateau est diffï¿½rent
     bool Board::move()
     {
         std::vector<int> copie(_tiles);
@@ -130,7 +130,15 @@ namespace gehul
         {
             _tries++;
             genRandomTiles();
+            updateScore();
         }
+    }
+
+    void Board::updateScore()
+    {
+        _score = 0;
+        for(int i : _tiles)
+            _score += i;
     }
 
     inline int Board::randVal() const

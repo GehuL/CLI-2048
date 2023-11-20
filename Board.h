@@ -48,6 +48,8 @@ namespace gehul
 
         void genRandomTiles();
 
+        void updateScore();
+
         int _score;
 
         int _tries;
